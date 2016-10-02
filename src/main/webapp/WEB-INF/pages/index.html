@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>Hello World</title>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Hello World!</h1>
+    </div>
+
+
+</div>
+
+<script th:href="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="resource-manager:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="resource-manager-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="resource-manager:war exploded" />
+    </root>
+  </artifact>
+</component>

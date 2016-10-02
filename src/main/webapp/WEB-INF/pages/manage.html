@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>Hello World</title>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Erőforrások adminisztrációja</h1>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Új erőforrás hozzáadása</div>
+            <div class="panel-body">
+                <form th:action="@{/manage/createResource}" th:object="${resource}" method="post" accept-charset="UTF-8">
+                    <div class="form-group">
+                        <label for="resourceName">Erőforrás megnevezése</label>
+                        <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Név" th:field="*{resourceName}"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Erőforrás leírása</label>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Leírás" th:field="*{description}"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="resourceType">Erőforrás típusa</label>
+                        <select class="form-control" id="resourceType" name="resourceType" th:field="*{resourceType}">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="isActive" name="isActive" th:field="*{isActive}"></input> Aktív
+                            <small>(használható)</small>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="isArchived" name="isArchived" th:field="*{isArchived}"></input> Archivált
+                            <small>(megszűnt)</small>
+                        </label>
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
+                </form>
+            </div>
+    </div>
+
+</div>
+
+<script th:href="@{/resources/js/bootstrap.min.js}"></script>
+<script th:href="@{/resources/js/jquery-3.1.1.min.js}"></script>
+
+</body>
+</html>

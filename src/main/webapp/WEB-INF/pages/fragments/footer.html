@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<!--/*  Multiple fragments may be defined in one file */-->
+<div th:fragment="footer">
+    <hr></hr>
+    &copy; 2016 <a href="https://github.com/kissdave">kissdave</a><i class="icon-github"></i>
+</div>
+<div th:fragment="footer-admin">
+    &copy; 2016 Admin Footer
+</div>
+</body>
+</html>
