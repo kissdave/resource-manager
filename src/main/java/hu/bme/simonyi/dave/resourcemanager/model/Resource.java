@@ -19,11 +19,9 @@ public class Resource {
 
     private String description;
 
-    @NotNull
-    private Boolean isActive;
+    private Boolean active;
 
-    @NotNull
-    private Boolean isArchived;
+    private Boolean archived;
 
     /* --- Connections --- */
 
@@ -43,8 +41,8 @@ public class Resource {
         // Just for DB reasons.
         resourceName = "";
         description = "";
-        isActive = false;
-        isArchived = false;
+        active = false;
+        archived = false;
     }
 
     /* --- Getters & Setters */
@@ -74,19 +72,19 @@ public class Resource {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public Boolean getArchived() {
-        return isArchived;
+        return archived;
     }
 
     public void setArchived(Boolean archived) {
-        isArchived = archived;
+        this.archived = archived;
     }
 
     public ResourceType getResourceType() {

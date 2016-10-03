@@ -28,24 +28,24 @@
                     <div class="form-group">
                         <label for="resourceType">Erőforrás típusa</label>
                         <select class="form-control" id="resourceType" name="resourceType" th:field="*{resourceType}">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="1">1</option>
+                            <option value="1">2</option>
+                            <option value="1">3</option>
+                            <option value="1">4</option>
+                            <option value="1">5</option>
                         </select>
                     </div>
 
 
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" id="isActive" name="isActive" th:field="*{isActive}"></input> Aktív
+                            <input type="checkbox" id="active" name="active" th:checked="*{active}"></input> Aktív
                             <small>(használható)</small>
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" id="isArchived" name="isArchived" th:field="*{isArchived}"></input> Archivált
+                            <input type="checkbox" id="archived" name="archived" th:checked="*{archived}"></input> Archivált
                             <small>(megszűnt)</small>
                         </label>
                     </div>

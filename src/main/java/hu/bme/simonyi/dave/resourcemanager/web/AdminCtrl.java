@@ -25,7 +25,8 @@ public class AdminCtrl {
     public static final String MANAGE = "manage";
 
     @RequestMapping(value = "/manage")
-    public String manageHome() {
+    public String manageHome(Model model) {
+        model.addAttribute("resource", new Resource());
         return MANAGE;
     }
 
@@ -36,7 +37,7 @@ public class AdminCtrl {
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute("resource", new Resource());
+        model.addAttribute("resource", resource);
         return new FormHandler(
                 bindingResult,
                 redirectAttributes,
