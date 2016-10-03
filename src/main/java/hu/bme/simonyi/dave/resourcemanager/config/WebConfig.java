@@ -27,6 +27,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setPrefix("/WEB-INF/pages/");
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML5");
+        resolver.setCharacterEncoding("UTF-8");
         return resolver;
     }
 
@@ -47,6 +48,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateEngine(templateEngine());
         resolver.setOrder(1);
         resolver.setViewNames(new String[]{"*", "js/*", "template/*"});
+        resolver.setCharacterEncoding("UTF-8");
         return resolver;
     }
 
