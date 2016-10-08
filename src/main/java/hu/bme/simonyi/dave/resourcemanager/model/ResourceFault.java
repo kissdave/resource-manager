@@ -17,7 +17,7 @@ public class ResourceFault {
 
     private String longDescription;
 
-    private Boolean isActive;
+    private Boolean active;
 
     /* --- Connections --- */
 
@@ -50,11 +50,11 @@ public class ResourceFault {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public Resource getResource() {

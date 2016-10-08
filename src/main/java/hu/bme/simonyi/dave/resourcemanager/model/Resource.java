@@ -2,6 +2,7 @@ package hu.bme.simonyi.dave.resourcemanager.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,10 +29,10 @@ public class Resource {
     @ManyToOne
     private ResourceType resourceType;
 
-    @OneToMany(mappedBy = "resource", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "resource", cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<ResourceFault> resourceFaults;
 
-    @OneToMany(mappedBy = "resource", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "resource", cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Request> requests;
 
 
@@ -111,4 +112,12 @@ public class Resource {
         this.requests = requests;
     }
 
+    public void addResourceFault(ResourceFault resourceFault) {
+        if(resourceFaults == null) {
+            resourceFaults = new ArrayList<ResourceFault>();
+        }
+
+        resourceFaults.add(resourceFault);
+        resourceFault.setResource(this);
+    }
 }

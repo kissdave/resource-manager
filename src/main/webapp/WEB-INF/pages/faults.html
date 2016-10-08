@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>Hello World</title>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Erőforrások hibái</h1>
+    </div>
+
+    <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Új hibajegy hozzáadása</div>
+        <div class="panel-body">
+            <form th:action="@{/faults/createFault}" th:object="${fault}" method="post"
+                  accept-charset="UTF-8">
+                <div class="form-group">
+                    <label for="resourceType">Erőforrás</label>
+                    <select class="form-control" id="resourceID" name="resourceID">
+                        <option th:each="resourceElement : ${resourceList}"
+                                th:value="${resourceElement.resourceID}"
+                                th:text="${resourceElement.resourceName}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resourceName">Hiba rövid leírása</label>
+                    <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Rövid leírás"
+                           th:field="*{shortDescription}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="description">Hiba leírása</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Hosszú leírás"
+                           th:field="*{longDescription}"></input>
+                </div>
+
+
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="active" name="active" th:field="*{active}"></input> Aktív
+                        <small>(még mindig fennáll)</small>
+                    </label>
+                </div>
+                <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-hovered table-bordered">
+        <thead>
+        <th>Erőforrás neve</th>
+        <th>Hiba leírása</th>
+        <th>Hiba hosszú leírás</th>
+        <th>Eszközök</th>
+        </thead>
+        <tbody>
+        <tr th:each="faultElement : ${faultList}">
+            <td th:text="${faultElement.resource.resourceName}">Ex. Room</td>
+            <td th:text="${faultElement.shortDescription}">Rooms</td>
+            <td th:text="${faultElement.longDescription}">A simple room</td>
+            <td>DELETE</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script th:href="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>
