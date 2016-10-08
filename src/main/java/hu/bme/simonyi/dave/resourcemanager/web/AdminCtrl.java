@@ -49,7 +49,7 @@ public class AdminCtrl {
     public String createResource(
             Model model,
             @ModelAttribute(RESOURCE) @Valid final Resource resource,
-            @RequestParam("resourceTypeID") final Integer requestTypeID,
+            @RequestParam("resourceTypeID") final Integer resourceTypeID,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
@@ -64,7 +64,7 @@ public class AdminCtrl {
         ) {
             @Override
             public void processFormData() throws Exception {
-                resourceService.createResource(resource, requestTypeID);
+                resourceService.createResource(resource, resourceTypeID);
             }
         }.processForm();
     }

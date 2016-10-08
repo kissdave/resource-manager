@@ -4,6 +4,9 @@
     <meta charset="utf-8"></meta>
     <title>Hello World</title>
     <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script th:href="@{/resources/js/jquery-3.1.1.min.js}"></script>
+    <script th:href="@{/resources/js/bootstrap.min.js}"></script>
+
 </head>
 <body>
 <div th:include="fragments/header :: header"></div>
@@ -16,21 +19,26 @@
     <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><a href="#collapse" data-toggle="collapse" data-target="#res_body" aria-expanded="false" aria-controls="res_body">Új erőforrás hozzáadása</a></div>
-            <div class="panel-body" id="res_body">
-                <form th:action="@{/manage/createResource}" th:object="${resource}" method="post" accept-charset="UTF-8">
+        <div class="panel-heading">Új erőforrás hozzáadása</div>
+            <div class="panel-body">
+                <form th:action="@{/manage/createResource}" th:object="${resource}" method="post"
+                      accept-charset="UTF-8">
                     <div class="form-group">
                         <label for="resourceName">Erőforrás megnevezése</label>
-                        <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Név" th:field="*{resourceName}"></input>
+                        <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Név"
+                               th:field="*{resourceName}"></input>
                     </div>
                     <div class="form-group">
                         <label for="description">Erőforrás leírása</label>
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Leírás" th:field="*{description}"></input>
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Leírás"
+                               th:field="*{description}"></input>
                     </div>
                     <div class="form-group">
                         <label for="resourceType">Erőforrás típusa</label>
                         <select class="form-control" id="resourceTypeID" name="resourceTypeID">
-                            <option th:each="resourceTypeElement : ${resourceTypeList}" th:value="${resourceTypeElement.resourceTypeID}" th:text="${resourceTypeElement.name}"></option>
+                            <option th:each="resourceTypeElement : ${resourceTypeList}"
+                                    th:value="${resourceTypeElement.resourceTypeID}"
+                                    th:text="${resourceTypeElement.name}"></option>
                         </select>
                     </div>
 
@@ -43,7 +51,8 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" id="archived" name="archived" th:field="*{archived}"></input> Archivált
+                            <input type="checkbox" id="archived" name="archived" th:field="*{archived}"></input>
+                            Archivált
                             <small>(megszűnt)</small>
                         </label>
                     </div>
@@ -55,14 +64,17 @@
     <div class="panel panel-default">
         <div class="panel-heading">Új erőforrástípus hozzáadása</div>
         <div class="panel-body">
-            <form th:action="@{/manage/createResourceType}" th:object="${resourceType}" method="post" accept-charset="UTF-8">
+            <form th:action="@{/manage/createResourceType}" th:object="${resourceType}" method="post"
+                  accept-charset="UTF-8">
                 <div class="form-group">
                     <label for="resourceName">Erőforrás megnevezése</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Név" th:field="*{name}"></input>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Név"
+                           th:field="*{name}"></input>
                 </div>
                 <div class="form-group">
                     <label for="description">Erőforrás leírása</label>
-                    <input type="text" class="form-control" id="description" name="description" placeholder="Leírás" th:field="*{description}"></input>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Leírás"
+                           th:field="*{description}"></input>
                 </div>
                 <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
             </form>
@@ -98,10 +110,5 @@
     </table>
 
 </div>
-
-<script th:href="@{/resources/js/jquery-3.1.1.min.js}"></script>
-<script th:href="@{/resources/js/bootstrap.min.js}"></script>
-
-
 </body>
 </html>
