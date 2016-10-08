@@ -29,7 +29,8 @@ public abstract class FormHandler {
                 processFormData();
 
             } catch (Exception e) {
-                message = "Error:" + e.getMessage();
+                e.printStackTrace();
+                message = "Error: " + e.getMessage();
             }
 
             redirectAttributes.addFlashAttribute("message", message);

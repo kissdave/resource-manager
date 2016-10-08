@@ -2,6 +2,7 @@ package hu.bme.simonyi.dave.resourcemanager.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,5 +56,14 @@ public class ResourceType {
 
     public void setResources(List<Resource> resources) {
         this.resources = resources;
+    }
+
+    public void addResource(Resource resource) {
+        if(resources == null) {
+            resources = new ArrayList<Resource>();
+        }
+
+        resources.add(resource);
+        resource.setResourceType(this);
     }
 }
