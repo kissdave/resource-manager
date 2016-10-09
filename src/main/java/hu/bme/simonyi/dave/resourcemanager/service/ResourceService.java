@@ -2,6 +2,7 @@ package hu.bme.simonyi.dave.resourcemanager.service;
 
 import hu.bme.simonyi.dave.resourcemanager.model.Resource;
 import hu.bme.simonyi.dave.resourcemanager.model.ResourceType;
+import hu.bme.simonyi.dave.resourcemanager.repository.ResourceRepository;
 import hu.bme.simonyi.dave.resourcemanager.repository.ResourceTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class ResourceService {
     @Autowired
     ResourceTypeRepository resourceTypeRepository;
 
+    @Autowired
+    ResourceRepository resourceRepository;
+
     @Transactional
     public void createResource(Resource resource) {
         em.persist(resource);
@@ -32,5 +36,24 @@ public class ResourceService {
         final ResourceType resourceType = resourceTypeRepository.findOne(resourceTypeID);
         resourceType.addResource(resource);
         createResource(resource);
+    }
+
+    @Transactional
+    public void changeActive(Integer resourceID) {
+        final Resource resource = resourceRepository.findOne(resourceID);
+        resource.setActive(!resource.getActive());
+        em.persist(resource);
+    }
+
+    @Transactional
+    public void changeArchive(Integer id) {
+        final Resource resource = resourceRepository.findOne(id);
+        if(!resource.getArchived()) {
+            resource.setArchived(true);
+            resource.setActive(false);
+        } else {
+            resource.setArchived(false);
+        }
+        em.persist(resource);
     }
 }

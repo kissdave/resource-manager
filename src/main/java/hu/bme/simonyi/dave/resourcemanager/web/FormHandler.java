@@ -1,16 +1,17 @@
 package hu.bme.simonyi.dave.resourcemanager.web;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 public abstract class FormHandler {
-
     BindingResult bindingResult;
     RedirectAttributes redirectAttributes;
     String message;
     String attributeName;
     Object modelObject;
     String resultPage;
+    static final Logger logger = Logger.getLogger(FormHandler.class);
 
     public FormHandler(BindingResult bindingResult, RedirectAttributes redirectAttributes, String message, String attributeName, Object modelObject, String resultPage) {
         this.bindingResult = bindingResult;
@@ -29,7 +30,7 @@ public abstract class FormHandler {
                 processFormData();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Exception during form handling. ", e);
                 message = "Error: " + e.getMessage();
             }
 

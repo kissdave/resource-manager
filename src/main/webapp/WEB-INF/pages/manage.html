@@ -86,12 +86,16 @@
         <th>Erőforrás neve</th>
         <th>Erőforrás típusa</th>
         <th>Erőforrás leírása</th>
+        <th>Erőforrás használható</th>
+        <th>Erőforrás archív (megszűnt)</th>
         </thead>
         <tbody>
         <tr th:each="res_element : ${resourceList}">
             <td th:text="${res_element.resourceName}">Ex. Room</td>
             <td th:text="${res_element.resourceType.name}">Rooms</td>
             <td th:text="${res_element.description}">A simple room</td>
+            <td align="center"><a th:href="@{/manage/changeActive/} + ${res_element.resourceID}"><span class="glyphicon" aria-hidden="true" th:classappend="${res_element.active} ? glyphicon-ok : glyphicon-lock"></span></a></td>
+            <td align="center"><a th:href="@{/manage/changeArchive/} + ${res_element.resourceID}"><span class="glyphicon" aria-hidden="true" th:classappend="${res_element.archived} ? glyphicon-ok : glyphicon-remove"></span></a></td>
         </tr>
         </tbody>
     </table>
