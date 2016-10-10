@@ -48,12 +48,29 @@ public class ResourceService {
     @Transactional
     public void changeArchive(Integer id) {
         final Resource resource = resourceRepository.findOne(id);
-        if(!resource.getArchived()) {
+        if (!resource.getArchived()) {
             resource.setArchived(true);
             resource.setActive(false);
         } else {
             resource.setArchived(false);
         }
         em.persist(resource);
+    }
+
+    @Transactional
+    public void updateResource(Resource resource) {
+        em.merge(resource);
+    }
+
+    @Transactional
+    public void updateResource(Resource resource, Integer resourceTypeID) {
+        final Resource resourceOld = resourceRepository.findOne(resource.getResourceID());
+        ResourceType resourceTypeOld = resourceOld.getResourceType();
+        final ResourceType resourceTypeNew = resourceTypeRepository.findOne(resourceTypeID);
+
+        resourceTypeOld.deleteResource(resourceOld);
+        resourceTypeNew.addResource(resource);
+
+        updateResource(resource);
     }
 }

@@ -19,50 +19,55 @@
     <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><a data-toggle="collapse" href="#collapseResource" aria-expanded="false" aria-controls="collapseResource">Új erőforrás hozzáadása</a></div>
-            <div class="panel-body collapse" id="collapseResource">
-                <form th:action="@{/manage/createResource}" th:object="${resource}" method="post"
-                      accept-charset="UTF-8">
-                    <div class="form-group">
-                        <label for="resourceName">Erőforrás megnevezése</label>
-                        <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Név"
-                               th:field="*{resourceName}"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Erőforrás leírása</label>
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Leírás"
-                               th:field="*{description}"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="resourceType">Erőforrás típusa</label>
-                        <select class="form-control" id="resourceTypeID" name="resourceTypeID">
-                            <option th:each="resourceTypeElement : ${resourceTypeList}"
-                                    th:value="${resourceTypeElement.resourceTypeID}"
-                                    th:text="${resourceTypeElement.name}"></option>
-                        </select>
-                    </div>
+        <div class="panel-heading"><a data-toggle="collapse" href="#collapseResource" aria-expanded="false"
+                                      aria-controls="collapseResource">Új erőforrás hozzáadása</a></div>
+        <form th:action="*{resourceID} ? @{/manage/updateResource/} + *{resourceID} : @{/manage/createResource}"
+              th:object="${resource}" method="post"
+              accept-charset="UTF-8">
+            <div class="panel-body collapse" th:classappend="*{resourceID} ? 'in' : ''" id="collapseResource">
+
+                <div class="form-group">
+                    <label for="resourceName">Erőforrás megnevezése</label>
+                    <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Név"
+                           th:field="*{resourceName}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="description">Erőforrás leírása</label>
+                    <input type="text" class="form-control" id="description" name="description" placeholder="Leírás"
+                           th:field="*{description}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="resourceType">Erőforrás típusa</label>
+                    <select class="form-control" id="resourceTypeID" name="resourceTypeID">
+                        <option th:each="resourceTypeElement : ${resourceTypeList}"
+                                th:value="${resourceTypeElement.resourceTypeID}"
+                                th:text="${resourceTypeElement.name}"></option>
+                    </select>
+                </div>
 
 
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="active" name="active" th:field="*{active}"></input> Aktív
-                            <small>(használható)</small>
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="archived" name="archived" th:field="*{archived}"></input>
-                            Archivált
-                            <small>(megszűnt)</small>
-                        </label>
-                    </div>
-                    <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
-                </form>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="active" name="active" th:field="*{active}"></input> Aktív
+                        <small>(használható)</small>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="archived" name="archived" th:field="*{archived}"></input>
+                        Archivált
+                        <small>(megszűnt)</small>
+                    </label>
+                </div>
+                <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
+
             </div>
+        </form>
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><a data-toggle="collapse" href="#collapseResourceType" aria-expanded="false" aria-controls="collapseResourceType">Új erőforrástípus hozzáadása</a></div>
+        <div class="panel-heading"><a data-toggle="collapse" href="#collapseResourceType" aria-expanded="false"
+                                      aria-controls="collapseResourceType">Új erőforrástípus hozzáadása</a></div>
         <div class="panel-body collapse" id="collapseResourceType">
             <form th:action="@{/manage/createResourceType}" th:object="${resourceType}" method="post"
                   accept-charset="UTF-8">
@@ -91,11 +96,17 @@
         </thead>
         <tbody>
         <tr th:each="res_element : ${resourceList}">
-            <td th:text="${res_element.resourceName}">Ex. Room</td>
+            <td><a th:href="@{/manage/updateResource/} + ${res_element.resourceID}"
+                   th:text="${res_element.resourceName}">Ex. Room</a></td>
             <td th:text="${res_element.resourceType.name}">Rooms</td>
             <td th:text="${res_element.description}">A simple room</td>
-            <td align="center"><a th:href="@{/manage/changeActive/} + ${res_element.resourceID}"><span class="glyphicon" aria-hidden="true" th:classappend="${res_element.active} ? glyphicon-ok : glyphicon-lock"></span></a></td>
-            <td align="center"><a th:href="@{/manage/changeArchive/} + ${res_element.resourceID}"><span class="glyphicon" aria-hidden="true" th:classappend="${res_element.archived} ? glyphicon-ok : glyphicon-remove"></span></a></td>
+            <td align="center"><a th:href="@{/manage/changeActive/} + ${res_element.resourceID}"><span class="glyphicon"
+                                                                                                       aria-hidden="true"
+                                                                                                       th:classappend="${res_element.active} ? glyphicon-ok : glyphicon-lock"></span></a>
+            </td>
+            <td align="center"><a th:href="@{/manage/changeArchive/} + ${res_element.resourceID}"><span
+                    class="glyphicon" aria-hidden="true"
+                    th:classappend="${res_element.archived} ? glyphicon-ok : glyphicon-remove"></span></a></td>
         </tr>
         </tbody>
     </table>

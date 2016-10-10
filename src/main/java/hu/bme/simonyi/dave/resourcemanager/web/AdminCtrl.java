@@ -35,7 +35,9 @@ public class AdminCtrl {
 
     @RequestMapping(value = "/manage")
     public String manageHome(Model model) {
-        model.addAttribute(RESOURCE, new Resource());
+        if (!model.containsAttribute(RESOURCE)) {
+            model.addAttribute(RESOURCE, new Resource());
+        }
         model.addAttribute(RESOURCETYPE, new ResourceType());
         model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
         model.addAttribute("resourceList", resourceRepository.findAll());
@@ -89,11 +91,46 @@ public class AdminCtrl {
         }.processForm();
     }
 
+    @RequestMapping(value = "/manage/updateResource/{id}", method = RequestMethod.GET)
+    public String updateResourceGet(
+            Model model,
+            @PathVariable("id") final Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        redirectAttributes.addFlashAttribute(RESOURCE, resourceRepository.findOne(id));
+        return "redirect:/" + MANAGE;
+    }
+
+    @RequestMapping(value = "/manage/updateResource/{id}", method = RequestMethod.POST)
+    public String updateResourcePost(
+            Model model,
+            @ModelAttribute(RESOURCE) @Valid final Resource resource,
+            @PathVariable("id") final Integer id,
+            @RequestParam("resourceTypeID") final Integer resourceTypeID,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        return new FormHandler(
+                bindingResult,
+                redirectAttributes,
+                "Erőforrás frissítve",
+                RESOURCE,
+                resource,
+                MANAGE
+        ) {
+            @Override
+            public void processFormData() throws Exception {
+                resource.setResourceID(id);
+                resourceService.updateResource(resource, resourceTypeID);
+            }
+        }.processForm();
+    }
+
     @RequestMapping(value = "/manage/changeActive/{id}")
     public String changeActive(
             Model model,
             @PathVariable("id") final Integer id
-            ) {
+    ) {
 
         resourceService.changeActive(id);
         return "redirect:/" + MANAGE;

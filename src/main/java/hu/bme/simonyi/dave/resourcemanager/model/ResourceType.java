@@ -21,7 +21,7 @@ public class ResourceType {
 
     /* --- Connections --- */
 
-    @OneToMany(mappedBy = "resourceType", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "resourceType", cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Resource> resources;
 
     /* --- Getters & Setters */
@@ -65,5 +65,15 @@ public class ResourceType {
 
         resources.add(resource);
         resource.setResourceType(this);
+    }
+
+    public void deleteResource(Resource resource) {
+        if(resources == null) {
+            resources = new ArrayList<Resource>();
+            return;
+        }
+
+        resources.remove(resource);
+        resource.setResourceType(null);
     }
 }
