@@ -28,6 +28,10 @@ public class ResourceService {
 
     @Transactional
     public void createResource(Resource resource) {
+        if(resource.getArchived()) {
+            resource.setActive(false);
+        }
+
         em.persist(resource);
     }
 
@@ -59,6 +63,11 @@ public class ResourceService {
 
     @Transactional
     public void updateResource(Resource resource) {
+
+        if(resource.getArchived()) {
+            resource.setActive(false);
+        }
+
         em.merge(resource);
     }
 

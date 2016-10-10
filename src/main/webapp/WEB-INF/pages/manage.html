@@ -37,11 +37,13 @@
                            th:field="*{description}"></input>
                 </div>
                 <div class="form-group">
-                    <label for="resourceType">Erőforrás típusa</label>
+                    <label for="resourceTypeID">Erőforrás típusa</label>
                     <select class="form-control" id="resourceTypeID" name="resourceTypeID">
                         <option th:each="resourceTypeElement : ${resourceTypeList}"
                                 th:value="${resourceTypeElement.resourceTypeID}"
-                                th:text="${resourceTypeElement.name}"></option>
+                                th:text="${resourceTypeElement.name}"
+                                th:selected="${resource.resourceType} ? ${resource.resourceType.resourceTypeID.equals(resourceTypeElement.resourceTypeID)} : ''"
+                        ></option>
                     </select>
                 </div>
 

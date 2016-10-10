@@ -32,6 +32,7 @@ public class AdminCtrl {
     public static final String MANAGE = "manage";
     public static final String RESOURCE = "resource";
     public static final String RESOURCETYPE = "resourceType";
+    public static final String REDIRECT = "redirect:/";
 
     @RequestMapping(value = "/manage")
     public String manageHome(Model model) {
@@ -98,7 +99,7 @@ public class AdminCtrl {
             RedirectAttributes redirectAttributes
     ) {
         redirectAttributes.addFlashAttribute(RESOURCE, resourceRepository.findOne(id));
-        return "redirect:/" + MANAGE;
+        return REDIRECT + MANAGE;
     }
 
     @RequestMapping(value = "/manage/updateResource/{id}", method = RequestMethod.POST)
@@ -133,7 +134,7 @@ public class AdminCtrl {
     ) {
 
         resourceService.changeActive(id);
-        return "redirect:/" + MANAGE;
+        return REDIRECT + MANAGE;
     }
 
     @RequestMapping(value = "/manage/changeArchive/{id}")
@@ -143,6 +144,6 @@ public class AdminCtrl {
     ) {
 
         resourceService.changeArchive(id);
-        return "redirect:/" + MANAGE;
+        return REDIRECT + MANAGE;
     }
 }
