@@ -2,8 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"></meta>
-    <title>Hello World</title>
+    <title>SIMONYI TERMEK - Hibajegyek</title>
     <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/images/favicon.ico}" rel="icon" type="image/x-icon"/>
 </head>
 <body>
 <div th:include="fragments/header :: header"></div>
@@ -15,10 +16,46 @@
 
     <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Hibajegy követés</h4>
+                </div>
+                <form th:action="@{/faults/createFaultComment}" method="post" accept-charset="UTF-8">
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="description">Megjegyzés</label>
+                            <input type="text" class="form-control" id="commentText" name="commentText"
+                                   placeholder="Hiba megoldásával kapcsolatos jegyzet"></input>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="commentActive" name="commentActive" checked="checked"></input>
+                                Aktív
+                                <small>(még mindig fennáll)</small>
+                            </label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+                    <input type="submit" class="btn btn-primary" value="Mentés"></input>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <div class="panel panel-default">
-        <div class="panel-heading">Új hibajegy hozzáadása</div>
-        <div class="panel-body">
+        <div class="panel-heading"><a data-toggle="collapse" href="#collapseFault" aria-expanded="false"
+                                      aria-controls="collapseFault">Új hibajegy hozzáadása</a></div>
+        <div class="panel-body collapse" id="collapseFault">
             <form th:action="@{/faults/createFault}" th:object="${fault}" method="post"
                   accept-charset="UTF-8">
                 <div class="form-group">
@@ -31,20 +68,22 @@
                 </div>
                 <div class="form-group">
                     <label for="resourceName">Hiba rövid leírása</label>
-                    <input type="text" class="form-control" id="resourceName" name="resourceName" placeholder="Rövid leírás"
+                    <input type="text" class="form-control" id="resourceName" name="resourceName"
+                           placeholder="Rövid leírás"
                            th:field="*{shortDescription}"></input>
                 </div>
                 <div class="form-group">
                     <label for="description">Hiba leírása</label>
-                    <input type="text" class="form-control" id="description" name="description" placeholder="Hosszú leírás"
+                    <input type="text" class="form-control" id="description" name="description"
+                           placeholder="Hosszú leírás"
                            th:field="*{longDescription}"></input>
                 </div>
 
 
-
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="active" name="active" th:field="*{active}"></input> Aktív
+                        <input type="checkbox" id="active" name="active" th:field="*{active}" checked="checked"></input>
+                        Aktív
                         <small>(még mindig fennáll)</small>
                     </label>
                 </div>
@@ -62,15 +101,20 @@
         </thead>
         <tbody>
         <tr th:each="faultElement : ${faultList}">
-            <td th:text="${faultElement.resource.resourceName}">Ex. Room</td>
-            <td th:text="${faultElement.shortDescription}">Rooms</td>
-            <td th:text="${faultElement.longDescription}">A simple room</td>
-            <td>DELETE</td>
+            <td th:style="${faultElement.active} ? 'text-decoration:none;' : 'text-decoration:line-through;'" th:text="${faultElement.resource.resourceName}">Resource</td>
+            <td th:style="${faultElement.active} ? 'text-decoration:none;' : 'text-decoration:line-through;'" th:text="${faultElement.shortDescription}">Short description</td>
+            <td th:text="${faultElement.longDescription}">Long description</td>
+            <td>
+                <button th:if="${faultElement.active}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">
+                    Módosítás
+                </button>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 
-<script th:href="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
 </body>
 </html>

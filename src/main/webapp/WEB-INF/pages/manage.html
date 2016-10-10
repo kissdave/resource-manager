@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"></meta>
-    <title>Hello World</title>
+    <title>SIMONYI TERMEK - Erőforrások kezelése</title>
     <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
-    <script th:href="@{/resources/js/jquery-3.1.1.min.js}"></script>
-    <script th:href="@{/resources/js/bootstrap.min.js}"></script>
+    <link th:href="@{/resources/images/favicon.ico}" rel="icon" type="image/x-icon"/>
+
 
 </head>
 <body>
@@ -19,8 +19,8 @@
     <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Új erőforrás hozzáadása</div>
-            <div class="panel-body">
+        <div class="panel-heading"><a data-toggle="collapse" href="#collapseResource" aria-expanded="false" aria-controls="collapseResource">Új erőforrás hozzáadása</a></div>
+            <div class="panel-body collapse" id="collapseResource">
                 <form th:action="@{/manage/createResource}" th:object="${resource}" method="post"
                       accept-charset="UTF-8">
                     <div class="form-group">
@@ -62,8 +62,8 @@
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading">Új erőforrástípus hozzáadása</div>
-        <div class="panel-body">
+        <div class="panel-heading"><a data-toggle="collapse" href="#collapseResourceType" aria-expanded="false" aria-controls="collapseResourceType">Új erőforrástípus hozzáadása</a></div>
+        <div class="panel-body collapse" id="collapseResourceType">
             <form th:action="@{/manage/createResourceType}" th:object="${resourceType}" method="post"
                   accept-charset="UTF-8">
                 <div class="form-group">
@@ -114,5 +114,8 @@
     </table>
 
 </div>
+
+<script th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
 </body>
 </html>
