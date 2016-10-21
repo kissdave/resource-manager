@@ -1,6 +1,6 @@
 package hu.bme.simonyi.dave.resourcemanager.web;
 
-import hu.bme.simonyi.dave.resourcemanager.model.Resource;
+import hu.bme.simonyi.dave.resourcemanager.exceptions.FormProcessException;
 import hu.bme.simonyi.dave.resourcemanager.model.ResourceFault;
 import hu.bme.simonyi.dave.resourcemanager.repository.ResourceFaultRepository;
 import hu.bme.simonyi.dave.resourcemanager.repository.ResourceRepository;
@@ -32,10 +32,12 @@ public class FaultCtrl {
     @Autowired
     ResourceFaultService resourceFaultService;
 
+    private static final String FAULT = "fault";
+
 
     @RequestMapping(value = "/faults")
     public String faultsHome(Model model) {
-        model.addAttribute("fault", new ResourceFault());
+        model.addAttribute(FAULT, new ResourceFault());
         model.addAttribute("resourceList", resourceRepository.findAll());
         model.addAttribute("faultList", resourceFaultRepository.findAll());
         return "faults";
@@ -44,22 +46,22 @@ public class FaultCtrl {
     @RequestMapping(value = "/faults/createFault", method = RequestMethod.POST)
     public String createResource(
             Model model,
-            @ModelAttribute("fault") @Valid final ResourceFault resourceFault,
+            @ModelAttribute(FAULT) @Valid final ResourceFault resourceFault,
             @RequestParam("resourceID") final Integer resourceID,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute("fault", resourceFault);
+        model.addAttribute(FAULT, resourceFault);
         return new FormHandler(
                 bindingResult,
                 redirectAttributes,
                 "Hibajegy felvéve",
-                "fault",
+                FAULT,
                 resourceFault,
                 "faults"
         ) {
             @Override
-            public void processFormData() throws Exception {
+            public void processFormData() throws FormProcessException {
                 resourceFaultService.createFault(resourceFault, resourceID);
             }
         }.processForm();

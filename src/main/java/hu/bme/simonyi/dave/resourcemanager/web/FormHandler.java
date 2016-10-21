@@ -1,5 +1,6 @@
 package hu.bme.simonyi.dave.resourcemanager.web;
 
+import hu.bme.simonyi.dave.resourcemanager.exceptions.FormProcessException;
 import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -48,6 +49,6 @@ public abstract class FormHandler {
         redirectAttributes.addFlashAttribute(attributeName, modelObject);
     }
 
-    public abstract void processFormData() throws Exception;
+    public abstract void processFormData() throws FormProcessException;
 
 }
