@@ -60,7 +60,7 @@ public class ResourceType {
 
     public void addResource(Resource resource) {
         if(resources == null) {
-            resources = new ArrayList<Resource>();
+            resources = new ArrayList<>();
         }
 
         resources.add(resource);
@@ -69,7 +69,7 @@ public class ResourceType {
 
     public void deleteResource(Resource resource) {
         if(resources == null) {
-            resources = new ArrayList<Resource>();
+            resources = new ArrayList<>();
             return;
         }
 

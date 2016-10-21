@@ -8,6 +8,10 @@ public class FormProcessException extends Exception {
         // A default empty constructor for the Exception
     }
 
+    /**
+     * Constructor handles the message to the superclass
+     * @param message Handled to the superclass.
+     */
     public FormProcessException(String message) {
         super(message);
     }

@@ -114,7 +114,7 @@ public class Resource {
 
     public void addResourceFault(ResourceFault resourceFault) {
         if(resourceFaults == null) {
-            resourceFaults = new ArrayList<ResourceFault>();
+            resourceFaults = new ArrayList<>();
         }
 
         resourceFaults.add(resourceFault);

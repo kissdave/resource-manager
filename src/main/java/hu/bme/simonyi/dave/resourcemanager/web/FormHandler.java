@@ -5,6 +5,9 @@ import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+/**
+ * Abstract class to process and handle form data.
+ */
 public abstract class FormHandler {
     BindingResult bindingResult;
     RedirectAttributes redirectAttributes;
@@ -14,6 +17,15 @@ public abstract class FormHandler {
     String resultPage;
     static final Logger logger = Logger.getLogger(FormHandler.class);
 
+    /**
+     * Constructor with all variables.
+     * @param bindingResult
+     * @param redirectAttributes
+     * @param message
+     * @param attributeName
+     * @param modelObject
+     * @param resultPage
+     */
     public FormHandler(BindingResult bindingResult, RedirectAttributes redirectAttributes, String message, String attributeName, Object modelObject, String resultPage) {
         this.bindingResult = bindingResult;
         this.redirectAttributes = redirectAttributes;
@@ -23,6 +35,10 @@ public abstract class FormHandler {
         this.resultPage = resultPage;
     }
 
+    /**
+     * Processes the form data, adds error messages as attributes and redirects to the result page.
+     * @return The name of the result page.
+     */
     public String processForm() {
         if (!bindingResult.hasErrors()) {
 
@@ -42,6 +58,9 @@ public abstract class FormHandler {
         return "redirect:/" + resultPage;
     }
 
+    /**
+     * Keeps the errors during the process.
+     */
     private void keepErrors() {
         redirectAttributes.addFlashAttribute(
                 BindingResult.MODEL_KEY_PREFIX + attributeName,
@@ -49,6 +68,10 @@ public abstract class FormHandler {
         redirectAttributes.addFlashAttribute(attributeName, modelObject);
     }
 
+    /**
+     * Abstract method, implementation depends on the type of the data is processed.
+     * @throws FormProcessException
+     */
     public abstract void processFormData() throws FormProcessException;
 
 }

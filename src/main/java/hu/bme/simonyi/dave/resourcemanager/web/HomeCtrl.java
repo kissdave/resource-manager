@@ -11,6 +11,10 @@ public class HomeCtrl {
 
     private static final String INDEX = "index";
 
+    /**
+     * Loads the welcome screen.
+     * @return Returns the index.html
+     */
     @RequestMapping("*")
     public String home() {
         return INDEX;
