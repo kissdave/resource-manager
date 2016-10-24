@@ -50,8 +50,8 @@ public class ResourceService {
     }
 
     @Transactional
-    public void changeArchive(Integer id) {
-        final Resource resource = resourceRepository.findOne(id);
+    public void changeArchive(Integer resourceID) {
+        final Resource resource = resourceRepository.findOne(resourceID);
         if (!resource.getArchived()) {
             resource.setArchived(true);
             resource.setActive(false);

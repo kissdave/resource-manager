@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -44,7 +41,7 @@ public class FaultCtrl {
     }
 
     @RequestMapping(value = "/faults/createFault", method = RequestMethod.POST)
-    public String createResource(
+    public String createResourceFault(
             Model model,
             @ModelAttribute(FAULT) @Valid final ResourceFault resourceFault,
             @RequestParam("resourceID") final Integer resourceID,
@@ -67,4 +64,26 @@ public class FaultCtrl {
         }.processForm();
     }
 
+    @RequestMapping(value = "/faults/appendTextToFault/{id}", method = RequestMethod.POST)
+    public String appendTextToFault(
+            Model model,
+            @PathVariable("id") final Integer id,
+            @RequestParam("testToAppend") final String text,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        return new FormHandler(
+                bindingResult,
+                redirectAttributes,
+                "Hibajegy módosítva",
+                text,
+                String.class,
+                "faults"
+        ) {
+            @Override
+            public void processFormData() throws FormProcessException {
+                resourceFaultService.appendToFault(id, text);
+            }
+        }.processForm();
+    }
 }

@@ -22,8 +22,8 @@ public class ResourceTypeService {
     }
 
     @Transactional
-    public void updateResourceType() {
-        // TODO
+    public void updateResourceType(ResourceType resourceType) {
+        em.merge(resourceType);
     }
 
 }

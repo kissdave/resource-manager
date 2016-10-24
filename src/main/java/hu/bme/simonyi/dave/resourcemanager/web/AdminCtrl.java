@@ -42,6 +42,7 @@ public class AdminCtrl {
     /**
      * Displays the home screen of the Administration menu,
      * also it fills the tables with the existing data
+     *
      * @param model The data passed to the view.
      * @return The name of the HTML page to load.
      */
@@ -58,10 +59,11 @@ public class AdminCtrl {
 
     /**
      * Processes the new resource form, binds the data to the existing model and passes it to the service to create database entity.
-     * @param model The data passed to the view.
-     * @param resource The data submitted from the form, bind to the existing model.
-     * @param resourceTypeID The ID submitted from the form
-     * @param bindingResult The result of the binding process
+     *
+     * @param model              The data passed to the view.
+     * @param resource           The data submitted from the form, bind to the existing model.
+     * @param resourceTypeID     The ID submitted from the form
+     * @param bindingResult      The result of the binding process
      * @param redirectAttributes
      * @return The name of the HTML page to load.
      */
@@ -91,8 +93,9 @@ public class AdminCtrl {
 
     /**
      * Gets the resource to the form, to edit the data.
-     * @param model The data passed to the view.
-     * @param id The identifier of the resource
+     *
+     * @param model              The data passed to the view.
+     * @param id                 The identifier of the resource
      * @param redirectAttributes
      * @return The name of the HTML page to load.
      */
@@ -108,7 +111,8 @@ public class AdminCtrl {
 
     /**
      * Processes the resource form, binds the data to the existing model and passes it to the service to update a database entity.
-     * @param model The data passed to the view.
+     *
+     * @param model              The data passed to the view.
      * @param resource
      * @param id
      * @param resourceTypeID
@@ -143,8 +147,9 @@ public class AdminCtrl {
 
     /**
      * Changes the Active field of a Resource to the opposite, it uses the service.
+     *
      * @param model The data passed to the view.
-     * @param id The identifier of the Resource to change
+     * @param id    The identifier of the Resource to change
      * @return The name of the HTML page to load.
      */
     @RequestMapping(value = "/manage/changeActive/{id}")
@@ -159,8 +164,9 @@ public class AdminCtrl {
 
     /**
      * Changes the Archive field of a Resource to the opposite, it uses the service.
+     *
      * @param model The data passed to the view.
-     * @param id The identifier of the Resource to change
+     * @param id    The identifier of the Resource to change
      * @return The name of the HTML page to load.
      */
     @RequestMapping(value = "/manage/changeArchive/{id}")
@@ -175,9 +181,10 @@ public class AdminCtrl {
 
     /**
      * Processes the new resourceType form, binds the data to the existing model and passes it to the service to create database entity.
-     * @param model The data passed to the view.
-     * @param resourceType The data submitted from the form, bind to the existing model.
-     * @param bindingResult The result of the binding process
+     *
+     * @param model              The data passed to the view.
+     * @param resourceType       The data submitted from the form, bind to the existing model.
+     * @param bindingResult      The result of the binding process
      * @param redirectAttributes
      * @return The name of the HTML page to load.
      */
@@ -200,6 +207,40 @@ public class AdminCtrl {
             @Override
             public void processFormData() throws FormProcessException {
                 resourceTypeService.createResourceType(resourceType);
+            }
+        }.processForm();
+    }
+
+    @RequestMapping(value = "/manage/updateResourceType/{id}", method = RequestMethod.GET)
+    public String updateResourceTypeGet(
+            Model model,
+            @PathVariable("id") final Integer id,
+            RedirectAttributes redirectAttributes
+    ) {
+        redirectAttributes.addFlashAttribute(RESOURCE, resourceTypeRepository.findOne(id));
+        return REDIRECT + MANAGE;
+    }
+
+    @RequestMapping(value = "/manage/updateResourceType/{id}", method = RequestMethod.POST)
+    public String updateResourceTypePost(
+            Model model,
+            @ModelAttribute(RESOURCETYPE) @Valid final ResourceType resourceType,
+            @PathVariable("id") final Integer id,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        return new FormHandler(
+                bindingResult,
+                redirectAttributes,
+                "Erőforrástípus módosítva",
+                RESOURCETYPE,
+                resourceType,
+                MANAGE
+        ) {
+            @Override
+            public void processFormData() throws FormProcessException {
+                resourceType.setResourceTypeID(id);
+                resourceTypeService.updateResourceType(resourceType);
             }
         }.processForm();
     }
