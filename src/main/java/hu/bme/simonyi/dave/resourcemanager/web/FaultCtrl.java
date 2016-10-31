@@ -37,6 +37,7 @@ public class FaultCtrl {
         model.addAttribute(FAULT, new ResourceFault());
         model.addAttribute("resourceList", resourceRepository.findAll());
         model.addAttribute("faultList", resourceFaultRepository.findAll());
+        model.addAttribute("newLineChar", '\n');
         return "faults";
     }
 
@@ -64,16 +65,16 @@ public class FaultCtrl {
         }.processForm();
     }
 
-    @RequestMapping(value = "/faults/appendTextToFault/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/faults/appendTextToFault", method = RequestMethod.POST)
     public String appendTextToFault(
             Model model,
-            @PathVariable("id") final Integer id,
-            @RequestParam("testToAppend") final String text,
-            BindingResult bindingResult,
+            @RequestParam("FaultID") final Integer id,
+            @RequestParam("textToAppend") final String text,
+            @RequestParam(value = "commentActive", required = false) final boolean active,
             RedirectAttributes redirectAttributes
     ) {
         return new FormHandler(
-                bindingResult,
+                null,
                 redirectAttributes,
                 "Hibajegy módosítva",
                 text,
@@ -82,7 +83,11 @@ public class FaultCtrl {
         ) {
             @Override
             public void processFormData() throws FormProcessException {
-                resourceFaultService.appendToFault(id, text);
+                boolean processedActive = false;
+                if (active) {
+                    processedActive = true;
+                }
+                resourceFaultService.appendToFault(id, text, processedActive);
             }
         }.processForm();
     }

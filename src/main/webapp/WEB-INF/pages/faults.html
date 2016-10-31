@@ -27,11 +27,12 @@
                     </button>
                     <h4 class="modal-title" id="myModalLabel">Hibajegy követés</h4>
                 </div>
-                <form th:action="@{/faults/createFaultComment}" method="post" accept-charset="UTF-8">
+                <form th:action="@{/faults/appendTextToFault}" method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="FaultID" id="FaultID"></input>
                 <div class="modal-body">
                         <div class="form-group">
                             <label for="description">Megjegyzés</label>
-                            <input type="text" class="form-control" id="commentText" name="commentText"
+                            <input type="text" class="form-control" id="textToAppend" name="textToAppend"
                                    placeholder="Hiba megoldásával kapcsolatos jegyzet"></input>
                         </div>
                         <div class="checkbox">
@@ -103,9 +104,9 @@
         <tr th:each="faultElement : ${faultList}">
             <td th:style="${faultElement.active} ? 'text-decoration:none;' : 'text-decoration:line-through;'" th:text="${faultElement.resource.resourceName}">Resource</td>
             <td th:style="${faultElement.active} ? 'text-decoration:none;' : 'text-decoration:line-through;'" th:text="${faultElement.shortDescription}">Short description</td>
-            <td th:text="${faultElement.longDescription}">Long description</td>
+            <td><p th:utext="${#strings.replace(faultElement.longDescription, newLineChar, '&lt;br /&gt;')}"></p></td>
             <td>
-                <button th:if="${faultElement.active}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal">
+                <button th:if="${faultElement.active}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal" th:attr="data-whatever=${faultElement.resourceFaultID}">
                     Módosítás
                 </button>
             </td>
@@ -116,5 +117,15 @@
 
 <script th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
 <script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    $('#commentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var transferredID = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('#FaultID').val(transferredID)
+    })
+</script>
 </body>
 </html>

@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import static hu.bme.simonyi.dave.resourcemanager.utils.Utils.getCurrentTimeInString;
+
 /**
  * Created by dkiss on 2016. 10. 08..
  */
@@ -39,9 +41,10 @@ public class ResourceFaultService {
     }
 
     @Transactional
-    public void appendToFault(Integer id, String text) {
+    public void appendToFault(Integer id, String text, boolean active) {
         final ResourceFault resourceFault = resourceFaultRepository.findOne(id);
-        resourceFault.setLongDescription(resourceFault.getLongDescription() + "\n " + text);
+        resourceFault.setLongDescription(resourceFault.getLongDescription() + "\n" + getCurrentTimeInString() + ": " + text);
+        resourceFault.setActive(active);
         em.merge(resourceFault);
     }
 }
