@@ -40,7 +40,7 @@ public abstract class FormHandler {
      * @return The name of the result page.
      */
     public String processForm() {
-        if (!bindingResult.hasErrors()) {
+        if (bindingResult == null || !bindingResult.hasErrors()) {
 
             try {
 

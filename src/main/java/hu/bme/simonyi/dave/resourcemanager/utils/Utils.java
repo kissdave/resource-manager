@@ -8,7 +8,11 @@ import java.util.Date;
 /**
  * Created by dkiss on 2016. 10. 31..
  */
-public class Utils {
+public final class Utils {
+
+    private Utils() {
+        // Empty private constructor for static class.
+    }
 
     public static String getCurrentTimeInString() {
         DateFormat df = new SimpleDateFormat("YYYY.MM.dd HH:mm");

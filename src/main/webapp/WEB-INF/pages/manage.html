@@ -70,9 +70,11 @@
     <div class="panel panel-default">
         <div class="panel-heading"><a data-toggle="collapse" href="#collapseResourceType" aria-expanded="false"
                                       aria-controls="collapseResourceType">Új erőforrástípus hozzáadása</a></div>
-        <div class="panel-body collapse" id="collapseResourceType">
-            <form th:action="@{/manage/createResourceType}" th:object="${resourceType}" method="post"
-                  accept-charset="UTF-8">
+        <form th:action="*{resourceTypeID} ? @{/manage/updateResourceType/} + *{resourceTypeID} : @{/manage/createResourceType}"
+              th:object="${resourceType}" method="post"
+              accept-charset="UTF-8">
+            <div class="panel-body collapse" th:classappend="*{resourceTypeID} ? 'in' : ''" id="collapseResourceType">
+
                 <div class="form-group">
                     <label for="resourceName">Erőforrás megnevezése</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Név"
@@ -84,8 +86,9 @@
                            th:field="*{description}"></input>
                 </div>
                 <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
-            </form>
-        </div>
+
+            </div>
+        </form>
     </div>
 
     <table class="table table-hovered table-bordered">
@@ -120,7 +123,8 @@
         </thead>
         <tbody>
         <tr th:each="restype_element : ${resourceTypeList}">
-            <td th:text="${restype_element.name}">Rooms</td>
+            <td><a th:href="@{/manage/updateResourceType/} + ${restype_element.resourceTypeID}"
+                   th:text="${restype_element.name}">Rooms</a></td>
             <td th:text="${restype_element.description}">Simple rooms</td>
         </tr>
         </tbody>

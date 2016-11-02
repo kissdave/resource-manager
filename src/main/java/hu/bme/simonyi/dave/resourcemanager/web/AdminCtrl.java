@@ -51,7 +51,9 @@ public class AdminCtrl {
         if (!model.containsAttribute(RESOURCE)) {
             model.addAttribute(RESOURCE, new Resource());
         }
-        model.addAttribute(RESOURCETYPE, new ResourceType());
+        if (!model.containsAttribute(RESOURCETYPE)) {
+            model.addAttribute(RESOURCETYPE, new ResourceType());
+        }
         model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
         model.addAttribute("resourceList", resourceRepository.findAll());
         return MANAGE;
@@ -217,7 +219,7 @@ public class AdminCtrl {
             @PathVariable("id") final Integer id,
             RedirectAttributes redirectAttributes
     ) {
-        redirectAttributes.addFlashAttribute(RESOURCE, resourceTypeRepository.findOne(id));
+        redirectAttributes.addFlashAttribute(RESOURCETYPE, resourceTypeRepository.findOne(id));
         return REDIRECT + MANAGE;
     }
 
