@@ -18,8 +18,10 @@ public class Request {
 
     private String eventDescription;
 
+    @NotNull
     private Date dateFrom;
 
+    @NotNull
     private Date dateTo;
 
     private Date handleBefore;
@@ -38,6 +40,26 @@ public class Request {
 
     @ManyToOne
     private User user;
+
+
+    /* --- Constructors --- */
+    public Request() {
+        this("", "", null, null, null, null, "", null, null, null);
+    }
+
+    public Request(String eventName, String eventDescription, Date dateFrom, Date dateTo, Date handleBefore, Date handleAfter, String comment, Resource resource, RequestStatus requestStatus, User user) {
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.handleBefore = handleBefore;
+        this.handleAfter = handleAfter;
+        this.comment = comment;
+        this.resource = resource;
+        this.requestStatus = requestStatus;
+        this.user = user;
+    }
+
 
     /* --- Getters & Setters */
 

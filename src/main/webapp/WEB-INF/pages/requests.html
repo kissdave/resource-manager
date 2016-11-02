@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>SIMONYI TERMEK - Foglalások</title>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/images/favicon.ico}" rel="icon" type="image/x-icon"/>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Foglalások</h1>
+    </div>
+
+    <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
+    <div class="well">
+        <a href="#" th:href="@{/request/createRequest/}"><button type="button" class="btn btn-primary btn-lg btn-block">Új foglalás leadása</button></a>
+    </div>
+
+
+    <table class="table table-hovered table-bordered">
+        <thead>
+        <th>Foglalás időpontja</th>
+        <th>Foglalt erőforrás</th>
+        <th>Állapot</th>
+        <th>Esemény neve</th>
+        <th>Eszközök</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>2016.10.29 17:00 <br/> 2016.10.29.20:00</td>
+            <td>102</td>
+            <td>Új, nem feldolgozott</td>
+            <td>Körvacsora</td>
+            <td>
+                <button class="btn btn-success">
+                    <span class="glyphicon glyphicon-ok"></span> Elfogadás
+                </button>
+                <button class="btn btn-danger">
+                    <span class="glyphicon glyphicon-remove"></span> Elutasítás
+                </button>
+                <button class="btn btn-info">
+                    <span class="glyphicon glyphicon-pencil"></span> Módosítás
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>

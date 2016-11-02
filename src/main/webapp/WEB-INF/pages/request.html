@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <title>SIMONYI TERMEK - Foglalások</title>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/images/favicon.ico}" rel="icon" type="image/x-icon"/>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Új foglalás</h1>
+    </div>
+
+    <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Új foglalás leadása</div>
+        <form th:action="*{requestID} ? @{/request/updateRequest/} + *{requestID} : @{/request/createRequest/}" th:object="${request}" method="post" accept-charset="UTF-8">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="resourceID">Erőforrás megnevezése</label>
+                    <select class="form-control" id="resourceID" name="resourceID">
+                        <option th:each="resourceElement : ${resourceList}"
+                                th:value="${resourceElement.resourceID}"
+                                th:text="${resourceElement.resourceName}"
+                                th:selected="${request.resource} ? ${request.resource.resourceID.equals(resourceElement.resourceID)} : ''"></option>
+                    </select>
+                </div>
+
+                <fieldset>
+                    <legend>Időpont</legend>
+                    <div class="form-group">
+                        <label for="dateFrom">Foglalás kezdete</label>
+                        <input type="datetime" class="form-control" id="dateFrom" name="dateFrom"
+                               placeholder="Mikor kezdődik a rendezvény?" th:field="*{dateFrom}"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateTo">Foglalás vége</label>
+                        <input type="datetime" class="form-control" id="dateTo" name="dateTo"
+                               placeholder="Meddig tart a rendezvény?" th:field="*{dateTo}"></input>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Átadás és átvétel</legend>
+                    <div class="form-group">
+                        <label for="handleBefore">Átvétel időpontja</label>
+                        <input type="datetime" class="form-control" id="handleBefore" name="handleBefore"
+                               placeholder="Mikor hozod vissza a kulcsot / eszközt?" th:field="*{handleBefore}"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="handleBefore">Leadás időpontja</label>
+                        <input type="datetime" class="form-control" id="handleAfter" name="handleAfter"
+                               placeholder="Mikor hozod vissza a kulcsot / eszközt?" th:field="*{handleAfter}"></input>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Esemény adatai</legend>
+                    <div class="form-group">
+                        <label for="eventName">Esemény megnevezése</label>
+                        <input type="text" class="form-control" id="eventName" name="eventName" placeholder=""
+                               th:field="*{eventName}"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Esemény leírása</label>
+                        <textarea name="eventDescription" id="eventDescription" class="form-control" rows="3"
+                                  th:field="*{eventDescription}"></textarea>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="comment">Megjegyzés</label>
+                    <textarea name="comment" id="comment" class="form-control" rows="3"
+                              th:field="*{comment}"></textarea>
+                </div>
+
+                <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
+
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<script th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

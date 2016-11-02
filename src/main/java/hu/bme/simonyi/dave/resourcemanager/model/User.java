@@ -2,6 +2,7 @@ package hu.bme.simonyi.dave.resourcemanager.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,5 +68,14 @@ public class User {
 
     public void setRequests(List<Request> requests) {
         this.requests = requests;
+    }
+
+    public void addRequest(Request request) {
+        if(requests == null) {
+            requests = new ArrayList<>();
+        }
+
+        requests.add(request);
+        request.setUser(this);
     }
 }

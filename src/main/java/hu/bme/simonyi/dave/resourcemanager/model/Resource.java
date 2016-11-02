@@ -120,4 +120,13 @@ public class Resource {
         resourceFaults.add(resourceFault);
         resourceFault.setResource(this);
     }
+
+    public void addRequest(Request request) {
+        if(requests == null) {
+            requests = new ArrayList<>();
+        }
+
+        requests.add(request);
+        request.setResource(this);
+    }
 }

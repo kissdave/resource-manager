@@ -2,6 +2,7 @@ package hu.bme.simonyi.dave.resourcemanager.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,14 @@ public class RequestStatus {
 
     private String description;
 
+    public static final String NEW = "Új (nem elfogadott)";
+    public static final String APPROVED = "Elfogadott";
+    public static final String DECLINED = "Elutasított";
+    public static final String UPDATED = "Módosított";
+    public static final String CANCELLED = "Visszavont";
+    public static final String ARCHIVED = "Archivált";
+    public static final String DELETED = "Törölt";
+    
     /* --- Connections --- */
 
     @OneToMany(mappedBy = "requestStatus", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
@@ -55,5 +64,23 @@ public class RequestStatus {
 
     public void setRequests(List<Request> requests) {
         this.requests = requests;
+    }
+
+    public void addRequest(Request request) {
+        if(requests == null) {
+            requests = new ArrayList<>();
+        }
+
+        requests.add(request);
+        request.setRequestStatus(this);
+    }
+
+    public void removeRequest(Request request) {
+        if(requests == null) {
+            return;
+        }
+
+        requests.remove(request);
+        request.setRequestStatus(null);
     }
 }
