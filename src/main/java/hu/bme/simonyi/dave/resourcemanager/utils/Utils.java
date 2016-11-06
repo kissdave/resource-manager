@@ -10,6 +10,8 @@ import java.util.Date;
  */
 public final class Utils {
 
+    public static final String DATEFORMAT = "yyyy-MM-dd HH:mm";
+
     private Utils() {
         // Empty private constructor for static class.
     }

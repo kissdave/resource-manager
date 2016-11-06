@@ -66,8 +66,19 @@ public class RequestService {
     }
 
     @Transactional
-    public void updateRequest() {
-        // TODO User changes the request, it will be undecided again.
+    public void updateRequest(Request request, Integer resourceID, Integer userID) {
+        Request oldRequest = requestRepository.findOne(request.getRequestID());
+        oldRequest.updateFields(request);
+
+        Resource resource = resourceRepository.findOne(resourceID);
+        oldRequest.getResource().removeRequest(oldRequest);
+        resource.addRequest(oldRequest);
+
+        oldRequest.getRequestStatus().removeRequest(oldRequest);
+        RequestStatus requestStatus = requestStatusRepository.findAll().stream().filter(x -> x.getName().equals(RequestStatus.UPDATED)).findFirst().get();
+        requestStatus.addRequest(oldRequest);
+
+        em.merge(oldRequest);
     }
 
     @Transactional

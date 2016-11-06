@@ -150,4 +150,14 @@ public class Request {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void updateFields(Request request) {
+        this.eventName = request.getEventName();
+        this.eventDescription = request.getEventDescription();
+        this.dateFrom = request.getDateFrom();
+        this.dateTo = request.getDateTo();
+        this.handleBefore = request.getHandleBefore();
+        this.handleAfter = request.getHandleAfter();
+        this.comment = request.getComment();
+        }
 }

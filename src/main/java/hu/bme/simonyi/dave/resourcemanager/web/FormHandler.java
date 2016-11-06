@@ -15,6 +15,13 @@ public abstract class FormHandler {
     String attributeName;
     Object modelObject;
     String resultPage;
+    String errorPage;
+
+    public FormHandler setErrorPage(String errorPage) {
+        this.errorPage = errorPage;
+        return this;
+    }
+
     static final Logger logger = Logger.getLogger(FormHandler.class);
 
     /**
@@ -49,6 +56,12 @@ public abstract class FormHandler {
             } catch (Exception e) {
                 logger.error("Exception during form handling. ", e);
                 message = "Error: " + e.getMessage();
+                if(!errorPage.isEmpty()) {
+                    redirectAttributes.addFlashAttribute("message", message);
+                    return "redirect:/" + errorPage;
+                }
+
+
             }
 
             redirectAttributes.addFlashAttribute("message", message);

@@ -129,4 +129,12 @@ public class Resource {
         requests.add(request);
         request.setResource(this);
     }
+    public void removeRequest(Request request) {
+        if(requests == null) {
+            return;
+        }
+
+        requests.remove(request);
+        request.setResource(null);
+    }
 }
