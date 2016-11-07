@@ -15,7 +15,10 @@ public class User {
     private Integer userID;
 
     @NotNull
-    private String name;
+    private String username;
+
+    @NotNull
+    private String password;
 
     @NotNull
     private String email;
@@ -23,11 +26,30 @@ public class User {
     @NotNull
     private String mobile;
 
+    private Integer enabled;
+
     /* --- Connections --- */
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Request> requests;
 
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<UserRole> roles;
+
+    /* --- Constructors --- */
+
+    public User() {
+    }
+
+    public User(User user) {
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.mobile = user.getMobile();
+        this.enabled = user.getEnabled();
+        this.requests = user.getRequests();
+        this.roles = user.getRoles();
+    }
     /* --- Getters & Setters --- */
 
     public Integer getUserID() {
@@ -38,12 +60,20 @@ public class User {
         this.userID = userID;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -62,12 +92,28 @@ public class User {
         this.mobile = mobile;
     }
 
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
     public List<Request> getRequests() {
         return requests;
     }
 
     public void setRequests(List<Request> requests) {
         this.requests = requests;
+    }
+
+    public List<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
     }
 
     public void addRequest(Request request) {
