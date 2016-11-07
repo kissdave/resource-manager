@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8"></meta>
     <title>SIMONYI TERMEK - Foglalások</title>
@@ -95,11 +95,11 @@
             <td th:text="${requestElement.requestStatus.name}">Új, nem feldolgozott</td>
             <td th:text="${requestElement.eventName}">Esemény neve</td>
             <td>
-                <button id="approveButton" class="btn btn-success" data-toggle="modal" data-target="#approveModal"
+                <button sec:authorize="hasRole('ROLE_ADMIN')" id="approveButton" class="btn btn-success" data-toggle="modal" data-target="#approveModal"
                         th:attr="data-whatever=${requestElement.requestID}">
                     <span class="glyphicon glyphicon-ok"></span> Elfogadás
                 </button>
-                <button id="declineButton" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                <button sec:authorize="hasRole('ROLE_ADMIN')" id="declineButton" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                         th:attr="data-whatever=${requestElement.requestID}">
                     <span class="glyphicon glyphicon-remove"></span> Elutasítás
                 </button>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;

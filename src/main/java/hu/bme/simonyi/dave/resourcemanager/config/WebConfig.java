@@ -3,10 +3,12 @@ package hu.bme.simonyi.dave.resourcemanager.config;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -19,6 +21,7 @@ import java.util.Set;
  */
 @Configuration
 @EnableWebMvc
+@Import({SecurityConfig.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -34,6 +37,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public SpringTemplateEngine templateEngine() {
         Set<IDialect> dialects = new HashSet<>();
+        dialects.add(new SpringSecurityDialect());
         dialects.add(new LayoutDialect());
 
         SpringTemplateEngine engine = new SpringTemplateEngine();
