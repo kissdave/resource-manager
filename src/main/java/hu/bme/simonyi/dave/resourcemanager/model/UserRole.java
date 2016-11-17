@@ -1,5 +1,7 @@
 package hu.bme.simonyi.dave.resourcemanager.model;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -7,6 +9,7 @@ import javax.validation.constraints.NotNull;
  * Created by dkiss on 2016. 11. 07..
  */
 @Entity
+@Audited
 public class UserRole {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO )

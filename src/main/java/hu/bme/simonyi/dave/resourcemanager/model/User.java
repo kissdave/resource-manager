@@ -1,5 +1,7 @@
 package hu.bme.simonyi.dave.resourcemanager.model;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
  * Created by dkiss on 2016. 09. 27..
  */
 @Entity
+@Audited
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
