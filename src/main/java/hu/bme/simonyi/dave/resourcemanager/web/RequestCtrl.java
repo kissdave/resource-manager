@@ -3,10 +3,14 @@ package hu.bme.simonyi.dave.resourcemanager.web;
 import hu.bme.simonyi.dave.resourcemanager.exceptions.FormProcessException;
 import hu.bme.simonyi.dave.resourcemanager.model.Request;
 import hu.bme.simonyi.dave.resourcemanager.model.Resource;
+import hu.bme.simonyi.dave.resourcemanager.model.ResourceType;
 import hu.bme.simonyi.dave.resourcemanager.repository.RequestRepository;
 import hu.bme.simonyi.dave.resourcemanager.repository.ResourceRepository;
+import hu.bme.simonyi.dave.resourcemanager.repository.ResourceTypeRepository;
 import hu.bme.simonyi.dave.resourcemanager.service.RequestService;
 import hu.bme.simonyi.dave.resourcemanager.utils.Utils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +37,9 @@ public class RequestCtrl {
     ResourceRepository resourceRepository;
 
     @Autowired
+    ResourceTypeRepository resourceTypeRepository;
+
+    @Autowired
     RequestRepository requestRepository;
 
     @Autowired
@@ -54,6 +61,7 @@ public class RequestCtrl {
     @RequestMapping(value = "/request/createRequest/", method = RequestMethod.GET)
     public String newRequestForm(Model model) {
         model.addAttribute("request", new Request());
+        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
         model.addAttribute("resourceList", resourceRepository.findAll());
         return "request";
     }
@@ -96,6 +104,7 @@ public class RequestCtrl {
             Model model,
             @PathVariable("id") final Integer id) {
         model.addAttribute("request", requestRepository.findOne(id));
+        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
         model.addAttribute("resourceList", resourceRepository.findAll());
         return "request";
     }
@@ -173,5 +182,26 @@ public class RequestCtrl {
                 requestService.answerRequest(id, comment, false);
             }
         }.processForm();
+    }
+
+    @RequestMapping(value = "/requests/getResources/{id}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody String getResources(
+            Model model,
+            @PathVariable("id") final Integer id
+    ) {
+        final ResourceType resourceType = resourceTypeRepository.findOne(id);
+        JSONObject response = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        for (Resource resource : resourceType.getResources()) {
+            if(!resource.getActive()) {
+                continue;
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", resource.getResourceID());
+            jsonObject.put("name", resource.getResourceName());
+            jsonArray.put(jsonObject);
+        }
+        response.put("resources", jsonArray);
+        return response.toString();
     }
 }

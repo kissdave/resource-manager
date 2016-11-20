@@ -19,8 +19,20 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">Új foglalás leadása</div>
-        <form th:action="*{requestID} ? @{/request/updateRequest/} + *{requestID} : @{/request/createRequest/}" th:object="${request}" method="post" accept-charset="UTF-8">
+        <form th:action="*{requestID} ? @{/request/updateRequest/} + *{requestID} : @{/request/createRequest/}"
+              th:object="${request}" method="post" accept-charset="UTF-8">
             <div class="panel-body">
+                <div class="form-group">
+                    <label for="resourceID">Erőforrástípus</label>
+                    <select class="form-control" id="resourceTypeID" name="resourceTypeID">
+                        <option value="-1">Válassz típust!</option>
+                        <option th:each="resourceTypeElement : ${resourceTypeList}"
+                                th:value="${resourceTypeElement.resourceTypeID}"
+                                th:text="${resourceTypeElement.name}"
+                                th:selected="${request.resource != null} ? ${request.resource.resourceType.resourceTypeID.equals(resourceTypeElement.resourceTypeID)} : false"></option>
+                    </select>
+                </div>
+
                 <div class="form-group">
                     <label for="resourceID">Erőforrás megnevezése</label>
                     <select class="form-control" id="resourceID" name="resourceID">
@@ -89,6 +101,6 @@
 
 <script th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
 <script th:src="@{/resources/js/bootstrap.min.js}"></script>
-
+<script th:src="@{/resources/js/ajax.js}"></script>
 </body>
 </html>
