@@ -29,8 +29,8 @@
                     <li><a href="#" th:href="@{/requests}">Foglalás</a></li>
                     <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#" th:href="@{/manage}">Adminisztráció</a></li>
                     <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#" th:href="@{/faults}">Hibajegyek</a></li>
-                    <li><a href="../settings">Beállítások</a></li>
-                    <li><a href="#" th:href="@{/logout}">Kijelentkezés</a></li>
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"><a href="../settings">Beállítások</a></li>
+                    <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')"><a href="#" th:href="@{/logout}">Kijelentkezés</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->

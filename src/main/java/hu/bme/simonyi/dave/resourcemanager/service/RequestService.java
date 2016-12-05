@@ -66,7 +66,7 @@ public class RequestService {
     }
 
     @Transactional
-    public void updateRequest(Request request, Integer resourceID, Integer userID) {
+    public void updateRequest(Request request, Integer resourceID) {
         Request oldRequest = requestRepository.findOne(request.getRequestID());
         oldRequest.updateFields(request);
 

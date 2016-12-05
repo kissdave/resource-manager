@@ -1,12 +1,12 @@
 package hu.bme.simonyi.dave.resourcemanager.web;
 
 import hu.bme.simonyi.dave.resourcemanager.exceptions.FormProcessException;
-import hu.bme.simonyi.dave.resourcemanager.model.Request;
-import hu.bme.simonyi.dave.resourcemanager.model.Resource;
-import hu.bme.simonyi.dave.resourcemanager.model.ResourceType;
+import hu.bme.simonyi.dave.resourcemanager.model.*;
 import hu.bme.simonyi.dave.resourcemanager.repository.RequestRepository;
 import hu.bme.simonyi.dave.resourcemanager.repository.ResourceRepository;
 import hu.bme.simonyi.dave.resourcemanager.repository.ResourceTypeRepository;
+import hu.bme.simonyi.dave.resourcemanager.repository.UserRepository;
+import hu.bme.simonyi.dave.resourcemanager.security.CustomUserDetails;
 import hu.bme.simonyi.dave.resourcemanager.service.RequestService;
 import hu.bme.simonyi.dave.resourcemanager.utils.Utils;
 import org.json.JSONArray;
@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,8 @@ import java.security.Principal;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by dkiss on 2016. 10. 29..
@@ -45,6 +49,9 @@ public class RequestCtrl {
     @Autowired
     RequestService requestService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         CustomDateEditor editor = new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm"), true);
@@ -54,7 +61,14 @@ public class RequestCtrl {
     @RequestMapping(value = "/requests")
     public String requestsHome(Model model) {
         model.addAttribute("request", new Request());
-        model.addAttribute("requestList", requestRepository.findAll());
+
+        if(isLoggedInUserAdmin()) {
+            model.addAttribute("requestList", requestRepository.findAll());
+        } else {
+            final User user = userRepository.findOne(getLoggedInUserID());
+            List<Request> requestList = requestRepository.findAll().stream().filter(x -> x.getUser().getUserID().equals(user.getUserID())).collect(Collectors.toList());
+            model.addAttribute("requestList", requestList);
+        }
         return "requests";
     }
 
@@ -92,7 +106,7 @@ public class RequestCtrl {
                 if (eventName.isEmpty() || dateFrom == null || dateTo == null || resourceID == null) {
                     throw new FormProcessException("Please provide eventName, date and resource information for the request!");
                 } else {
-                    requestService.createRequest(new Request(eventName, eventDescription, dateFrom, dateTo, handleBefore, handleAfter, comment, null, null, null), resourceID, 1);
+                    requestService.createRequest(new Request(eventName, eventDescription, dateFrom, dateTo, handleBefore, handleAfter, comment, null, null, null), resourceID, getLoggedInUserID());
                 }
 
             }
@@ -137,7 +151,7 @@ public class RequestCtrl {
                 } else {
                     Request req = new Request(eventName, eventDescription, dateFrom, dateTo, handleBefore, handleAfter, comment, null, null, null);
                     req.setRequestID(id);
-                    requestService.updateRequest(req, resourceID, 1);
+                    requestService.updateRequest(req, resourceID);
                 }
 
             }
@@ -203,5 +217,22 @@ public class RequestCtrl {
         }
         response.put("resources", jsonArray);
         return response.toString();
+    }
+
+    public Integer getLoggedInUserID() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = userRepository.findByusername(username);
+        return user.getUserID();
+    }
+
+    public Boolean isLoggedInUserAdmin() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        final User user = userRepository.findByusername(username);
+        for( UserRole role : user.getRoles()) {
+            if(role.getRoleName().toUpperCase().contains("ADMIN")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
