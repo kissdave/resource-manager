@@ -47,15 +47,15 @@ public class JPAConfig {
 
     @Bean
     public DataSource dataSource() {
-//        MysqlDataSource mysqlDataSource = new MysqlDataSource();
-//        mysqlDataSource.setURL("jdbc:mysql://localhost:3306/resourcemanager?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-//        mysqlDataSource.setUser("resourcemanager");
-//        mysqlDataSource.setPassword("szkrm");
-
         MysqlDataSource mysqlDataSource = new MysqlDataSource();
-        mysqlDataSource.setURL("jdbc:mysql://localhost:3306/rm_temp?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
-        mysqlDataSource.setUser("rm_temp");
-        mysqlDataSource.setPassword("1234");
+        mysqlDataSource.setURL("jdbc:mysql://localhost:3306/resourcemanager?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+        mysqlDataSource.setUser("resourcemanager");
+        mysqlDataSource.setPassword("szkrm");
+
+//        MysqlDataSource mysqlDataSource = new MysqlDataSource();
+//        mysqlDataSource.setURL("jdbc:mysql://localhost:3306/rm_temp?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+//        mysqlDataSource.setUser("rm_temp");
+//        mysqlDataSource.setPassword("1234");
         return mysqlDataSource;
     }
 

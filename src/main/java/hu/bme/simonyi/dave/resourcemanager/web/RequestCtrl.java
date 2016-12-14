@@ -66,7 +66,10 @@ public class RequestCtrl {
             model.addAttribute("requestList", requestRepository.findAll());
         } else {
             final User user = userRepository.findOne(getLoggedInUserID());
-            List<Request> requestList = requestRepository.findAll().stream().filter(x -> x.getUser().getUserID().equals(user.getUserID())).collect(Collectors.toList());
+            List<Request> requestList = requestRepository.findAll()
+                    .stream()
+                    .filter(x -> x.getUser().getUserID().equals(user.getUserID()))
+                    .collect(Collectors.toList());
             model.addAttribute("requestList", requestList);
         }
         return "requests";
