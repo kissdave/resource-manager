@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <title>SIMONYI TERMEK - Hibajegyek</title>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/images/favicon.ico}" rel="icon" type="image/x-icon"/>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Erőforrások hibái</h1>
+    </div>
+
+    <div th:if="${message != null}" th:text="${message}" class="alert alert-info" role="alert">...</div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Hibajegy követés</h4>
+                </div>
+                <form th:action="@{/faults/appendTextToFault}" method="post" accept-charset="UTF-8">
+                    <input type="hidden" name="FaultID" id="FaultID"></input>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="description">Megjegyzés</label>
+                            <input type="text" class="form-control" id="textToAppend" name="textToAppend"
+                                   placeholder="Hiba megoldásával kapcsolatos jegyzet"></input>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="commentActive" name="commentActive" checked="checked"></input>
+                                Aktív
+                                <small>(még mindig fennáll)</small>
+                            </label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bezárás</button>
+                    <input type="submit" class="btn btn-primary" value="Mentés"></input>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><a data-toggle="collapse" href="#collapseFault" aria-expanded="false"
+                                      aria-controls="collapseFault">Új hibajegy hozzáadása</a></div>
+        <div class="panel-body collapse" id="collapseFault">
+            <form th:action="@{/faults/createFault}" th:object="${fault}" method="post"
+                  accept-charset="UTF-8">
+                <div class="form-group">
+                    <label for="resourceType">Erőforrás</label>
+                    <select class="form-control" id="resourceID" name="resourceID">
+                        <option th:each="resourceElement : ${resourceList}"
+                                th:value="${resourceElement.resourceID}"
+                                th:text="${resourceElement.resourceName}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resourceName">Hiba rövid leírása</label>
+                    <input type="text" class="form-control" id="resourceName" name="resourceName"
+                           placeholder="Rövid leírás"
+                           th:field="*{shortDescription}"></input>
+                </div>
+                <div class="form-group">
+                    <label for="description">Hiba leírása</label>
+                    <input type="text" class="form-control" id="description" name="description"
+                           placeholder="Hosszú leírás"
+                           th:field="*{longDescription}"></input>
+                </div>
+
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="active" name="active" th:field="*{active}" checked="checked"></input>
+                        Aktív
+                        <small>(még mindig fennáll)</small>
+                    </label>
+                </div>
+                <input type="submit" class="btn btn-primary btn-block" value="Küldés"></input>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-hovered table-bordered">
+        <thead>
+        <th>Erőforrás neve</th>
+        <th>Hiba leírása</th>
+        <th>Hiba hosszú leírás</th>
+        <th>Eszközök</th>
+        </thead>
+        <tbody>
+        <tr th:each="faultElement : ${faultList}">
+            <td th:style="${faultElement.active} ? 'text-decoration:none;' : 'text-decoration:line-through;'" th:text="${faultElement.resource.resourceName}">Resource</td>
+            <td th:style="${faultElement.active} ? 'text-decoration:none;' : 'text-decoration:line-through;'" th:text="${faultElement.shortDescription}">Short description</td>
+            <td><p th:utext="${#strings.replace(faultElement.longDescription, newLineChar, '&lt;br /&gt;')}"></p></td>
+            <td>
+                <button th:if="${faultElement.active}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#commentModal" th:attr="data-whatever=${faultElement.resourceFaultID}">
+                    Módosítás
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script th:src="@{/resources/js/jquery-3.1.1.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    $('#commentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var transferredID = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('#FaultID').val(transferredID)
+    })
+</script>
+</body>
+</html>
